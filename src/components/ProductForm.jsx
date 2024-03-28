@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 const initialDatForm = {
+    id: 0,
     name: '',
     description: '',
     price: ''
@@ -16,7 +17,7 @@ export const ProductForm = ({productSelected ,handlerAdd}) => {
         setForm(productSelected);
     }, [productSelected])                           // cuando productSelected cambie
 
-    
+
 
     return (
         <form onSubmit={(event) => {
@@ -44,7 +45,7 @@ export const ProductForm = ({productSelected ,handlerAdd}) => {
             </div>
 
             <div>
-                <button type="submit">Create</button>
+                <button type="submit">Save</button>
             </div>
         </form>
     )

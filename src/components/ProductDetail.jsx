@@ -4,6 +4,7 @@ import { PropTypes } from "prop-types";
 export const ProductDetail = ({handlerProductSelected, handlerRemove, product={} }) => {
     return (
         <tr>
+            <td>{product.id}</td>
             <td>{product.name}</td>
             <td>{product.description}</td>
             <td>{product.price}</td>
@@ -14,7 +15,7 @@ export const ProductDetail = ({handlerProductSelected, handlerRemove, product={}
                 
             </td>
             <td>
-                <button onClick={()=>handlerRemove(product.name)}>
+                <button onClick={()=>handlerRemove(product.id)}>
                     remove
                 </button>
                 
