@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 
 export const ProductGrid = ({handlerProductSelected, handlerRemove, products=[]}) => {
     return (
-        <table>
+        <table className="table table-hover table-stripped">
                 <thead>
                     <tr>
                         <th>name</th>
