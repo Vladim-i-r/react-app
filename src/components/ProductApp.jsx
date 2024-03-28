@@ -7,7 +7,7 @@ import { ProductForm } from "./ProductForm";
 
 export const ProductApp = ({ title }) => {
 
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState([]);                           //? ESTADOS
 
     const [productSelected, setProductSelected] = useState({
         name: '',
@@ -15,12 +15,12 @@ export const ProductApp = ({ title }) => {
         price: ''
     })
 
-    useEffect(() => {
+    useEffect(() => {                                                        //? EFECTOS
         const result = listProduct();
         setProducts(result);  //simulando que vienen del backend
     }, []) // corchete vacia indica que solo se crea en el inicio y no cuando actualiza o renderiza la pagina
 
-    const handlerAddProduct = (product) => {
+    const handlerAddProduct = (product) => {                                 //? HANDLERS
         console.log(product);
         setProducts([...products, { ...product }]); // ... = esparcir
     }
@@ -30,17 +30,19 @@ export const ProductApp = ({ title }) => {
         setProducts(products.filter(product => product.name != name));
     }
 
-    
+    const handlerProductSelected = (product) => {
+        setProductSelected({...product});   //se crea nueva instancia con los ...
+    }
 
     return (
         <div>
             <h1> {title}</h1>
             <div>
                 <div>
-                    <ProductForm handlerAdd={handlerAddProduct} />
+                    <ProductForm handlerAdd={handlerAddProduct} productSelected={productSelected}/>
                 </div>
                 <div>
-                    <ProductGrid products={products} handlerRemove={handlerRemoveProduct} />
+                    <ProductGrid products={products} handlerProductSelected={handlerProductSelected} handlerRemove={handlerRemoveProduct} />
                 </div>
             </div>
         </div>

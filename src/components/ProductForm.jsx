@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const initialDatForm = {
     name: '',
@@ -6,11 +6,17 @@ const initialDatForm = {
     price: ''
 }
 
-export const ProductForm = ({handlerAdd}) => {
+export const ProductForm = ({productSelected ,handlerAdd}) => {
 
     const [form, setForm] = useState(initialDatForm);
 
     const { name, description, price } = form;
+
+    useEffect(() => {
+        setForm(productSelected);
+    }, [productSelected])                           // cuando productSelected cambie
+
+    
 
     return (
         <form onSubmit={(event) => {
