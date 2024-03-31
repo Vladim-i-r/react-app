@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listProduct } from "../services/ProductService";
+import { findAll, create, remove, update } from "../services/ProductService";
 import { ProductGrid } from "./ProductGrid";
 import { PropTypes } from "prop-types";
 import { ProductForm } from "./ProductForm";
@@ -16,29 +16,42 @@ export const ProductApp = ({ title }) => {
         price: ''
     })
 
-    useEffect(() => {                                                        //? EFECTOS
-        const result = listProduct();
-        setProducts(result);  //simulando que vienen del backend
-    }, []) // corchete vacia indica que solo se crea en el inicio y no cuando actualiza o renderiza la pagina
+    const getProducts = async ()=> {
 
-    const handlerAddProduct = (product) => {                                 //? HANDLERS
-        console.log(product);
-       
-        if(product.id > 0){
-            setProducts(products.map(prod => {
-                if(prod.id == product.id){
-                    return {...product}
-                }
-                return prod;
-            })); 
-
-        } else {
-            setProducts([...products, { ...product, id: new Date().getTime() }]); // ... = esparcir
-        }
+        const result = await findAll();
+        //console.log(result);
+        setProducts(result.data._embedded.products);
     }
 
+    useEffect(() => {                                                       //? EFECTOS
+        getProducts();                                                      // Se crea otra funcion porque es asincrona y no es compatible con useEffect, por eso solo se manda llamar          
+        // const result = listProduct();    
+        //setProducts(result);  //simulando que vienen del backend
+    }, []) // corchete vacia indica que solo se crea en el inicio y no cuando actualiza o renderiza la pagina
+
+        
+    const handlerAddProduct = async (product) => {                          //? HANDLERS, si pueden ser async pero no los use**
+            // console.log(product);
+            
+            if (product.id > 0) {
+                const response = await update(product);
+                // console.log(response);
+                setProducts(products.map(prod => {
+                    if (prod.id == response.data.id) {
+                        return { ...response.data}
+                    }
+                    return prod;
+                }));
+            } else {
+                const response = await create(product);
+                setProducts([...products, { ...response.data }]);           // ... = esparcir  como ya viene id de la base lo quitamos id: new Date().getTime()
+            }
+        }
+
+    
     const handlerRemoveProduct = (id) => {
-        console.log(id)
+        // console.log(id);
+        remove(id);
         setProducts(products.filter(product => product.id != id));
     }
 
